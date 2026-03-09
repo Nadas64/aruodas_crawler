@@ -10,54 +10,25 @@ Iš **m.aruodas.lt** paieškos URL su pridėtais filtrais randa geriausius nekil
 
 ---
 
-## Kaip gauti .exe
+## Gauti .exe
 1) Įdiegti priklausomybes ir Playwright Chromium:
 ```powershell
 python -m pip install -r requirements.txt
 python -m playwright install chromium
 ```
 
-2) Sukompiliuoti C++ analizatorių:
+Sukompiliuoti C++ analizatorių:
 ```bash
 g++ -O2 -std=c++17 -o aruodas_analyze.exe aruodas_analyzer.cpp
 ```
 
-3) Supakuoti programą (PyInstaller, PowerShell):
+Supakuoti programą (PyInstaller, PowerShell):
 ```powershell
 pyinstaller --onedir --name aruodas_app --icon app.ico `
   --add-binary "aruodas_analyze.exe;." `
   --add-data "kainos.csv;." `
   --add-data "$env:LOCALAPPDATA\ms-playwright;ms-playwright" `
   aruodas_app.py
-```
-
-4) Paleidimas:
-```powershell
-.\dist\aruodas_app\aruodas_app.exe
-```
-
----
-
-## Kaip paleisti be .exe (manual)
-1) Priklausomybės + Chromium:
-```bash
-python -m pip install -r requirements.txt
-python -m playwright install chromium
-```
-
-2) C++ analizatorius:
-```bash
-g++ -O2 -std=c++17 -o aruodas_analyze.exe aruodas_analyzer.cpp
-```
-
-3) Paleidimas (interaktyviai):
-```bash
-python aruodas_app.py
-```
-
-Arba tiesiogiai (be prompt’ų):
-```bash
-python aruodas_search.py "<URL>" --top 10 --analyzer aruodas_analyze.exe --market-csv kainos.csv --out-top3 deals_top3.txt --append-to-market
 ```
 
 ---
