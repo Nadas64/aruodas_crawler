@@ -77,6 +77,12 @@ def parse_area_m2(text: str):
     return float(m.group(1)) if m else None
 
 
+def script_dir() -> str:
+    if getattr(sys, "frozen", False):
+        return os.path.dirname(sys.executable)
+    return os.path.dirname(os.path.abspath(__file__))
+
+
 def ensure_analyzer_path(p: str) -> str:
     p = (p or "").strip()
     if not p:
@@ -96,11 +102,6 @@ def ensure_analyzer_path(p: str) -> str:
             return cand_exe
 
     return cand
-
-    def script_dir() -> str:
-        if getattr(sys, "frozen", False):
-            return os.path.dirname(sys.executable)
-        return os.path.dirname(os.path.abspath(__file__))
 
 
 def append_to_csv(path: str, rows: list[dict]):
@@ -273,6 +274,7 @@ def main(argv=None):
     ap.add_argument("--max-items", type=int, default=0, help="0 = be limito")
     ap.add_argument("--delay", default="0.10,0.25")
     ap.add_argument("--timeout", type=int, default=25000)
+    ap.add_argument("--scrape-only", action="store_true", help="Tik surinkti į CSV, be C++ analizės")
 
     g = ap.add_mutually_exclusive_group()
     g.add_argument("--append-to-market", action="store_true", help="appendinti surinktus į market-csv")
@@ -416,6 +418,10 @@ def main(argv=None):
             append_to_csv(market_csv, collected)
         except Exception as e:
             print(f"CSV append klaida: {e}")
+
+    if args.scrape_only:
+        print(f"OK: įrašyta į {out_csv} (+{total_written} eilučių)")
+        return 0
 
     rc = run_cpp_analyzer(
         analyzer_path=analyzer_path,

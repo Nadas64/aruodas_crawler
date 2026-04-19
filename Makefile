@@ -3,6 +3,7 @@ SHELL := cmd
 PY := py -3
 APP := aruodas_app
 APP_PY := aruodas_app.py
+SEARCH_PY := aruodas_search.py
 CPP := aruodas_analyzer.cpp
 ANALYZER := aruodas_analyze.exe
 CSV := kainos.csv
@@ -20,6 +21,11 @@ exe:
 	$(PY) -m playwright install chromium
 	g++ -O2 -std=c++17 -o "$(ANALYZER)" "$(CPP)"
 	$(PY) -m PyInstaller --onedir --name "$(APP)" --icon "$(ICON)" --add-binary "$(ANALYZER);." --add-data "$(CSV);." --add-data "$(PW);ms-playwright" "$(APP_PY)"
+
+reference:
+	if not exist "$(SEARCH_PY)" (echo Nerastas $(SEARCH_PY) & exit /b 1)
+	if "$(URL)"=="" (echo Paduok URL: make reference URL="https://m.aruodas.lt/..." & exit /b 1)
+	$(PY) "$(SEARCH_PY)" "$(URL)" --out-csv "$(CSV)" --scrape-only
 
 clean:
 	if exist build rmdir /s /q build
