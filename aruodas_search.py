@@ -38,15 +38,8 @@ _force_playwright_browsers_path()
 from playwright.sync_api import sync_playwright
 
 
-OUT_CSV_DEFAULT = "kainos.csv"
+OUT_CSV_DEFAULT = "last_search.csv"
 OUT_TXT_DEFAULT = "deals_top3.txt"
-
-def script_dir() -> str:
-    try:
-        return os.path.dirname(os.path.abspath(__file__))
-    except Exception:
-        return os.getcwd()
-
 
 def norm_space(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").replace("\xa0", " ")).strip()
@@ -104,17 +97,10 @@ def ensure_analyzer_path(p: str) -> str:
 
     return cand
 
-def script_dir() -> str:
-    if getattr(sys, "frozen", False):
-        return os.path.dirname(sys.executable)
-    return os.path.dirname(os.path.abspath(__file__))
-
-    if os.name == "nt" and not p.lower().endswith(".exe"):
-        cand_exe = os.path.join(base, p + ".exe")
-        if os.path.exists(cand_exe):
-            return cand_exe
-
-    return cand
+    def script_dir() -> str:
+        if getattr(sys, "frozen", False):
+            return os.path.dirname(sys.executable)
+        return os.path.dirname(os.path.abspath(__file__))
 
 
 def append_to_csv(path: str, rows: list[dict]):
@@ -318,11 +304,11 @@ def main(argv=None):
         print(f"NERASTAS analizatorius: {analyzer_path}")
         return 3
 
-    append_to_market = True
-    if args.no_append_to_market:
-        append_to_market = False
-    elif args.append_to_market:
+    append_to_market = False
+    if args.append_to_market:
         append_to_market = True
+    elif args.no_append_to_market:
+        append_to_market = False
 
     scraped_at = datetime.now().isoformat(timespec="seconds")
 

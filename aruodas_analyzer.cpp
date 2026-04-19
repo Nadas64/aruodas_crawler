@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <unordered_set>
 
 static std::string trim(std::string s) {
     auto issp = [](unsigned char c){ return std::isspace(c); };
@@ -196,23 +197,34 @@ int main(int argc, char** argv) {
         return it->second;
     };
 
+    int i_url = need("url");
     int i_eur = need("eur_per_m2");
     int i_loc = need("location");
     int i_st  = need("street");
-    if (i_eur < 0 || i_loc < 0 || i_st < 0) {
-        std::cerr << "Market CSV trūksta stulpelių (reikia eur_per_m2, location, street)\n";
+    if (i_url < 0 || i_eur < 0 || i_loc < 0 || i_st < 0) {
+        std::cerr << "Market CSV trūksta stulpelių (reikia url, eur_per_m2, location, street)\n";
         return 5;
     }
 
     std::unordered_map<std::string, std::vector<double>> by_key_vals;
-    std::unordered_map<std::string, int> by_key_count;
 
     std::string line;
-    long long market_rows = 0;
+    std::vector<std::string> market_lines;
     while (std::getline(mf, line)) {
-        if (trim(line).empty()) continue;
-        auto flds = parse_csv_line(line);
-        if ((int)flds.size() <= std::max({i_eur, i_loc, i_st})) continue;
+        if (!trim(line).empty()) market_lines.push_back(line);
+    }
+
+    long long market_rows = 0;
+    std::unordered_set<std::string> seen_market_urls;
+
+    for (auto it = market_lines.rbegin(); it != market_lines.rend(); ++it) {
+        auto flds = parse_csv_line(*it);
+        if ((int)flds.size() <= std::max({i_url, i_eur, i_loc, i_st})) continue;
+
+        std::string url = trim(flds[i_url]);
+        if (url.empty()) continue;
+        if (seen_market_urls.find(url) != seen_market_urls.end()) continue;
+        seen_market_urls.insert(url);
 
         double eur = 0.0;
         if (!to_double(flds[i_eur], eur) || eur <= 0.0) continue;
@@ -223,7 +235,6 @@ int main(int argc, char** argv) {
 
         std::string key = street_only ? st : (loc + " | " + st);
         by_key_vals[key].push_back(eur);
-        by_key_count[key] += 1;
         market_rows++;
     }
 

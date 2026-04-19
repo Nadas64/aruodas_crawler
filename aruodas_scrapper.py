@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 
 
-OUT_CSV_DEFAULT = "kainos.csv"
+    OUT_CSV_DEFAULT = "kainos.csv"
 
 
 def script_dir() -> str:

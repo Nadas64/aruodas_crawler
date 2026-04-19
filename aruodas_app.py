@@ -26,8 +26,9 @@ def main():
         "--top", str(top_n),
         "--analyzer", _resource_path("aruodas_analyze.exe"),
         "--market-csv", _resource_path("kainos.csv"),
+        "--out-csv", _resource_path("last_search.csv"),
         "--out-top3", "deals_top3.txt",
-        "--append-to-market",
+        "--no-append-to-market",
     ]
 
     aruodas_search.main(argv)
