@@ -2,7 +2,7 @@
 
 ## Ką daro?
 
-Iš **m.aruodas.lt** paieškos URL su pridėtais filtrais randa geriausius nekilnojamo turto pasiūlymus kvadratinio metro kainos toje gatvėje atžvilgiu. Pasirinktą kiekį top kandidatų įrašo į **deals_top3.txt**. Dabartinis **kainos.csv** turi Vilniaus butų duomenis, o savo reference galima susikurti naudojant **aruodas_search.py** su `--scrape-only`. Akivaizdus trūkumas - pavieniai skelbimai tariamoje gatvėje; kadangi **kainos.csv** talpina ir rajoną, ateityje galima būtų parašyti algoritmą, kuris išfiltruotų netikslumus.
+Iš **m.aruodas.lt** paieškos URL su pridėtais filtrais randa geriausius nekilnojamo turto pasiūlymus kvadratinio metro kainos toje gatvėje atžvilgiu. Pasirinktą kiekį top kandidatų įrašo į **deals_top3.txt**. Dabartinis **kainos.csv** turi Vilniaus butų duomenis, o savo reference galima susikurti naudojant **aruodas_search.py** su `--scrape-only`.
 
 ---
 
