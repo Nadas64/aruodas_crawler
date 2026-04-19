@@ -15,10 +15,11 @@ Iš **m.aruodas.lt** paieškos URL su pridėtais filtrais randa geriausius nekil
 Supakuoti programą (PyInstaller, PowerShell):
 ```powershell
     mingw32-make
-
     mingw32-make run
 ```
 
+```
+```
 ---
 
 ## Kaip veikia
