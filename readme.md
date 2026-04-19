@@ -10,7 +10,7 @@ Iš **m.aruodas.lt** paieškos URL su pridėtais filtrais randa geriausius nekil
 
 ---
 
-Paleidimas
+## Paleidimas
 ```
     mingw32-make
     mingw32-make run
